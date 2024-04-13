@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  user_id Int @id @default(autoincrement())
+  user_name String
+  user_surname String
+  user_email String
+  user_password String
+  user_projects Project[]
+}
+
+model Project{
+  owner User? @relation(fields: [project_owner], references: [user_id]) 
+  project_owner Int?
+  project_name String
+  project_link String
+  project_id Int @default(autoincrement()) @id 
+  project_description String
+  project_image String
+  project_date DateTime @db.Date
+  project_tags Tag[]
+}
+
+model Tag {
+  tag_name String
+  id Int @id @default(autoincrement())
+  project Project[]
+}

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { Project, Prisma } from '@prisma/client';
 
 @Injectable()
@@ -34,7 +34,22 @@ export class ProjectService {
 
   async createProject(data: Prisma.ProjectCreateInput): Promise<Project> {
     return this.prisma.project.create({
-      data,
+      const author = data.author;
+      data: {
+        ...data,
+        author: {
+          connect: {
+            user_id: data.,
+          },
+        },
+        project_tags: {
+          create: [
+            {
+              tag_id: 1,
+            },
+          ],
+        },
+      },
     });
   }
 

@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id       String    @id @default(cuid())
+  user_name     String
+  user_surname  String
+  user_email    String    @unique
+  user_password String
+  user_projects Project[]
+}
+
+model Project {
+  author              User?          @relation(fields: [project_author], references: [user_id])
+  project_author      String?
+  project_name        String
+  project_link        String
+  project_id          String         @id @default(cuid())
+  project_description String
+  project_image       String
+  project_date        DateTime       @default(now())
+  project_tags        TagOnProject[]
+}
+
+model Tag {
+  tag_name          String         @unique
+  tag_id            Int            @default(autoincrement()) @unique
+  @@id([tag_id, tag_name])
+
+  TagOnProject      TagOnProject[]
+}
+
+model TagOnProject {
+  tag        Tag     @relation(fields: [tag_id], references: [tag_id])
+  tag_id     Int
+  project    Project @relation(fields: [project_id], references: [project_id])
+  project_id String
+
+  @@id([tag_id, project_id])
+}

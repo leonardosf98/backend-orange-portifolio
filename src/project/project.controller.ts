@@ -25,16 +25,6 @@ export class ProjectController {
   @ApiTags('Project')
   @UseInterceptors(FileInterceptor('project_image'))
   async addProject(@UploadedFile() file: Express.Multer.File, @Body() data) {
-    const tagList = data.project_tags.split(',');
-    data = {
-      ...data,
-      project_tags: {
-        create: tagList.map((tag: string) => ({
-          tag_name: tag,
-          project_id: undefined,
-        })),
-      },
-    };
     data.project_image = file.path;
     return this.projectService.createProject(data);
   }

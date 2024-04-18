@@ -34,18 +34,17 @@ export class ProjectService {
 
   async createProject(data: Prisma.ProjectCreateInput): Promise<Project> {
     return this.prisma.project.create({
-      const author = data.author;
       data: {
         ...data,
         author: {
           connect: {
-            user_id: data.,
+            user_id: 'clv5pbrua0000z7t32d99dywf',
           },
         },
         project_tags: {
           create: [
             {
-              tag_id: 1,
+              tag_name: 'Javascript',
             },
           ],
         },

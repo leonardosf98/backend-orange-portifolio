@@ -25,8 +25,7 @@ export class UserController {
   }
   @Post('register')
   @ApiTags('User')
-  @ApiBody({ type: CreateUserBody })
-  async registerUser(@Body() userData: CreateUserBody) {
+  async registerUser(@Body() userData: any) {
     return this.userService.createUser(userData);
   }
 }

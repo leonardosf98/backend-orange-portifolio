@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { User as UserModel } from '@prisma/client';
-import { CreateUserBody } from 'prisma/dtos/create-user-body';
+import { CreateUserBody } from 'prisma/dtos/CreateUserBody';
 import { UserService } from 'src/user/user.service';
 
 @Controller('user')

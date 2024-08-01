@@ -15,17 +15,17 @@ import { ProjectService } from 'src/project/project.service';
 @Controller('project')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
-  @Get(':id')
-  @ApiTags('Project')
-  async getProjectById(@Param('id') id: string): Promise<ProjectModel | null> {
-    return this.projectService.project({ project_id: id });
-  }
+  // @Get(':id')
+  // @ApiTags('Project')
+  // async getProjectById(@Param('id') id: string): Promise<ProjectModel | null> {
+  //   return this.projectService.project({ project_id: id });
+  // }
 
-  @Post('add')
-  @ApiTags('Project')
-  @UseInterceptors(FileInterceptor('project_image'))
-  async addProject(@UploadedFile() file: Express.Multer.File, @Body() data) {
-    data.project_image = file.path;
-    return this.projectService.createProject(data);
-  }
+  // @Post('add')
+  // @ApiTags('Project')
+  // @UseInterceptors(FileInterceptor('project_image'))
+  // async addProject(@UploadedFile() file: Express.Multer.File, @Body() data) {
+  //   data.project_image = file.path;
+  //   return this.projectService.createProject(data);
+  // }
 }

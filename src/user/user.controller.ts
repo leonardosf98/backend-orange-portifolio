@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { User as UserModel } from '@prisma/client';
+import { CreateUserBody } from 'src/dtos/CreateUserBody';
 import { UserService } from 'src/user/user.service';
 
 @Controller('user')
@@ -24,7 +25,7 @@ export class UserController {
   }
   @Post('register')
   @ApiTags('User')
-  async registerUser(@Body() userData: any) {
-    return this.userService.createUser(userData);
+  async registerUser(@Body() data: CreateUserBody) {
+    return this.userService.createUser(data);
   }
 }

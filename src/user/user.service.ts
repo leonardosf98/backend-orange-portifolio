@@ -37,7 +37,7 @@ export class UserService {
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     const saltOrRounds = 10;
     data.password = await bcrypt.hash(data.password, saltOrRounds);
-    const verify = await this.prisma.user.findUniqueOrThrow({
+    const verify = await this.prisma.user.findUnique({
       where: {
         email: data.email,
       },

@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class CreateUserBody {
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: 'O nome não pode estar em branco',
+  })
   @ApiProperty()
   name: string;
 
@@ -12,7 +14,12 @@ export class CreateUserBody {
   @ApiProperty()
   surname: string;
 
-  @IsEmail()
+  @IsEmail(
+    {},
+    {
+      message: 'O campo e-mail deve ser um endereço de e-mail válido',
+    },
+  )
   @IsNotEmpty({
     message: 'O campo e-mail não pode estar em branco',
   })
@@ -20,6 +27,9 @@ export class CreateUserBody {
   email: string;
 
   @IsNotEmpty()
+  @MinLength(8, {
+    message: 'A senha deve ter no mínimo 8 caracteres',
+  })
   @ApiProperty()
   password: string;
 }

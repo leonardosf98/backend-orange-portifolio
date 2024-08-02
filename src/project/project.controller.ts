@@ -10,6 +10,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { Project as ProjectModel } from '@prisma/client';
+import { CreateProjectBody } from 'src/dtos/CreateProjectBody';
 import { ProjectService } from 'src/project/project.service';
 
 @Controller('project')
@@ -21,11 +22,9 @@ export class ProjectController {
   //   return this.projectService.project({ project_id: id });
   // }
 
-  // @Post('add')
-  // @ApiTags('Project')
-  // @UseInterceptors(FileInterceptor('project_image'))
-  // async addProject(@UploadedFile() file: Express.Multer.File, @Body() data) {
-  //   data.project_image = file.path;
-  //   return this.projectService.createProject(data);
-  // }
+  @Post('add')
+  @ApiTags('Project')
+  async addProject(@Body() data: CreateProjectBody) {
+    return this.projectService.createProject(data);
+  }
 }

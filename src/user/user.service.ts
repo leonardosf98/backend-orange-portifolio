@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { User, Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -36,14 +36,22 @@ export class UserService {
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     const saltOrRounds = 10;
-    data.user_password = await bcrypt.hash(data.user_password, saltOrRounds);
+    data.password = await bcrypt.hash(data.password, saltOrRounds);
+    const verify = await this.prisma.user.findUniqueOrThrow({
+      where: {
+        email: data.email,
+      },
+    });
+    if (verify) {
+      throw new BadRequestException('E-mail já cadastrado');
+    }
     return this.prisma.user.create({
       data: {
-        user_name: data.user_name,
-        user_surname: data.user_surname,
-        user_email: data.user_email,
-        user_password: data.user_password,
-        user_projects: data.user_projects || undefined,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        password: data.password,
+        projects: data.projects || undefined,
       },
     });
   }

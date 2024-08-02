@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Project, Prisma } from '@prisma/client';
+import { CreateProjectBody } from 'src/dtos/CreateProjectBody';
 
 @Injectable()
 export class ProjectService {
@@ -11,7 +12,7 @@ export class ProjectService {
   ): Promise<Project | null> {
     return this.prisma.project.findFirst({
       where: projectWhereUniqueInput,
-      include: { project_tags: true },
+      include: { tags: true },
     });
   }
 
@@ -32,22 +33,17 @@ export class ProjectService {
     });
   }
 
-  async createProject(data: Prisma.ProjectCreateInput): Promise<Project> {
+  async createProject(data: CreateProjectBody): Promise<Project> {
+    const tagIds = data.tags.map((item) => ({ id: item }));
     return this.prisma.project.create({
       data: {
         ...data,
         author: {
           connect: {
-            user_id: 'clv5pbrua0000z7t32d99dywf',
+            id: Number(data.author),
           },
         },
-        project_tags: {
-          create: [
-            {
-              tag_name: 'Javascript',
-            },
-          ],
-        },
+        tags: { connect: tagIds },
       },
     });
   }

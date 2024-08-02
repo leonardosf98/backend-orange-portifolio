@@ -1,17 +1,8 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  Body,
-  UseInterceptors,
-  UploadedFile,
-  Query,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Get, Param, Post, Body, Query, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Project as ProjectModel } from '@prisma/client';
 import { CreateProjectBody } from 'src/dtos/CreateProjectBody';
+import { UpdateProjectBody } from 'src/dtos/UpdateProjectBody';
 import { ProjectService } from 'src/project/project.service';
 
 @Controller('project')
@@ -38,7 +29,13 @@ export class ProjectController {
 
   @Post('add')
   @ApiTags('Project')
-  async addProject(@Body() data: CreateProjectBody) {
+  async add(@Body() data: CreateProjectBody) {
     return this.projectService.createProject(data);
+  }
+
+  @Put('edit')
+  @ApiTags('Project')
+  async edit(@Body() data: UpdateProjectBody) {
+    return this.projectService.updateProject(data, data.projectToEdit);
   }
 }

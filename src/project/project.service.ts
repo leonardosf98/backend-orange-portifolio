@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Project, Prisma } from '@prisma/client';
 import { CreateProjectBody } from 'src/dtos/CreateProjectBody';
+import { UpdateProjectBody } from 'src/dtos/UpdateProjectBody';
 
 @Injectable()
 export class ProjectService {
@@ -64,14 +65,25 @@ export class ProjectService {
     });
   }
 
-  async updateProject(params: {
-    where: Prisma.ProjectWhereUniqueInput;
-    data: Prisma.ProjectUpdateInput;
-  }): Promise<Project> {
-    const { data, where } = params;
+  async updateProject(data: UpdateProjectBody, id: string): Promise<Project> {
+    const tagsId = data.tags.map((item) => {
+      if (item > 0 && item < 50) {
+        return { id: item };
+      }
+      throw new BadRequestException({ message: 'ID de tag inválido' });
+    });
     return this.prisma.project.update({
-      data,
-      where,
+      data: {
+        description: data.description,
+        // date: data.date,
+        name: data.name,
+        tags: {
+          connect: tagsId,
+        },
+      },
+      where: {
+        id: id,
+      },
     });
   }
 

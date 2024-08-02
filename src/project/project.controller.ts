@@ -1,4 +1,13 @@
-import { Controller, Get, Param, Post, Body, Query, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  Query,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Project as ProjectModel } from '@prisma/client';
 import { CreateProjectBody } from 'src/dtos/CreateProjectBody';
@@ -37,5 +46,11 @@ export class ProjectController {
   @ApiTags('Project')
   async edit(@Body() data: UpdateProjectBody) {
     return this.projectService.updateProject(data, data.projectToEdit);
+  }
+
+  @Delete(':id')
+  @ApiTags('Project')
+  async delete(@Param('id') id: string) {
+    return this.projectService.deleteProject(id);
   }
 }

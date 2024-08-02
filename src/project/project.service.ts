@@ -87,9 +87,17 @@ export class ProjectService {
     });
   }
 
-  async deleteProject(where: Prisma.ProjectWhereUniqueInput): Promise<Project> {
+  async deleteProject(id: string): Promise<Project> {
+    const project = await this.prisma.project.findUnique({
+      where: { id: id },
+    });
+
+    if (!project) {
+      throw new BadRequestException('Projeto não encontrado');
+    }
+
     return this.prisma.project.delete({
-      where,
+      where: { id: id },
     });
   }
 }

@@ -15,13 +15,13 @@ export class UserController {
     type: 'string',
     description: 'ID do Usuário',
   })
-  async getUserById(@Param('id') id: number): Promise<UserModel> {
+  async getUserById(@Param('id') id: string): Promise<UserModel> {
     const fieldsToSelect = {
       name: true,
       surname: true,
       projects: true,
     };
-    return this.userService.user({ id: id }, fieldsToSelect);
+    return this.userService.user({ id: Number(id) }, fieldsToSelect);
   }
   @Post('register')
   @ApiTags('User')

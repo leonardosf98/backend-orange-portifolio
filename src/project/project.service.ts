@@ -15,7 +15,22 @@ export class ProjectService {
       include: { tags: true },
     });
   }
-
+  async getProjectsByTag(
+    tag: Prisma.TagWhereUniqueInput,
+    page,
+  ): Promise<Project[] | null> {
+    return this.prisma.project.findMany({
+      where: {
+        tags: {
+          some: {
+            id: tag.id,
+          },
+        },
+      },
+      take: 10,
+      skip: page,
+    });
+  }
   async projects(params: {
     skip?: number;
     take?: number;
@@ -35,6 +50,7 @@ export class ProjectService {
 
   async createProject(data: CreateProjectBody): Promise<Project> {
     const tagIds = data.tags.map((item) => ({ id: item }));
+    console.log(tagIds);
     return this.prisma.project.create({
       data: {
         ...data,

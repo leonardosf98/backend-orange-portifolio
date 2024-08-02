@@ -4,24 +4,20 @@ import { IsNotEmpty } from 'class-validator';
 export class CreateProjectBody {
   @IsNotEmpty()
   @ApiProperty()
-  project_image: File;
+  tags: number[];
 
   @IsNotEmpty()
   @ApiProperty()
-  project_tags: string;
+  name: string;
 
   @IsNotEmpty()
   @ApiProperty()
-  project_name: string;
+  author: string;
 
   @IsNotEmpty()
   @ApiProperty()
-  project_owner: string;
-
-  @IsNotEmpty()
-  @ApiProperty()
-  project_link: string;
+  link: string;
 
   @ApiProperty()
-  project_description: string;
+  description: string;
 }
